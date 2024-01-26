@@ -39,3 +39,17 @@ body {
   display: flex;
   justify-content: space-between;
 }
+
+.ftr-container {
+  background-color: var(--color-bg-secondary);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
