@@ -1,4 +1,5 @@
 import './styles.css';
+import NumberInfo from '../NumberInfo';
 
 export default function Header() {
     return (
@@ -6,7 +7,9 @@ export default function Header() {
             <div className="container">
                 <div className='dflex-spbetwwen'>
                     <h1>DSFilter</h1>
-                    <p>6 produtos</p>
+                    <div className='headerInfo'>
+                        <NumberInfo /> <span>produto(s)</span>
+                    </div>
                 </div>
             </div>
         </header>

@@ -12,9 +12,13 @@ header h1 {
     font-size: 20px;
 }
 
-header p {
+.headerInfo {
     font-weight: 700;
     font-size: 12px;
     display: flex;
     align-items: center;
+}
+
+span {
+    margin-left: 5px;
 }

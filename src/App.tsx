@@ -1,15 +1,19 @@
+import { useState } from "react";
 import Filter from "./componentes/Filter";
 import Header from "./componentes/Header";
-import Listing from "./componentes/Listing";
+import { ContextProductCount } from "./utils/context-product";
 
 export default function App() {
+
+  const [contextProductCount, setContextProductCount] = useState<number>(0);
 
 
   return (
     <>
-      <Header />
-      <Filter />
-      <Listing />
+      <ContextProductCount.Provider value={{ contextProductCount, setContextProductCount }}>
+        <Header />
+        <Filter />
+      </ContextProductCount.Provider>
     </>
   );
 }
