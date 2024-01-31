@@ -39,7 +39,7 @@ export default function Filter() {
 
     function handleOnSubmit(event: any) {
         event.preventDefault();
-        onFilter(Number(formData.minPrice), Number(formData.maxPrice));
+        onFilter(Number(formData.minPrice) || 0, Number(formData.maxPrice) || Number.MAX_VALUE);
     }
 
     function onFilter(min: number, max: number) {
