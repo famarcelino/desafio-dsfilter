@@ -6,13 +6,18 @@ import Listing from '../Listing';
 import { ContextProductCount } from '../../utils/context-product';
 import { ProductDTO } from '../../models/product';
 
+type Props = {
+    min: number;
+    max: number;
+}
+
 type FormData = {
     minPrice?: number;
     maxPrice?: number;
 }
 
 
-export default function Filter() {
+export default function Filter({min, max}: Props) {
 
     const { setContextProductCount } = useContext(ContextProductCount);
 
@@ -24,7 +29,7 @@ export default function Filter() {
     });
 
     useEffect(() => {
-        const listProd = productService.findByPrice(0, Number.MAX_VALUE);
+        const listProd = productService.findByPrice(min, max);
         setProducts(listProd);
         setContextProductCount(listProd.length);
     }, [formData]);
@@ -39,7 +44,7 @@ export default function Filter() {
 
     function handleOnSubmit(event: any) {
         event.preventDefault();
-        onFilter(Number(formData.minPrice) || 0, Number(formData.maxPrice) || Number.MAX_VALUE);
+        onFilter(Number(formData.minPrice) || min, Number(formData.maxPrice) || max);
     }
 
     function onFilter(min: number, max: number) {
@@ -75,9 +80,12 @@ export default function Filter() {
             </div>
             <div className='container ftr-container mt20'>
                 {
+                    products.length > 0 ?
                     products.map(
                         product => <Listing key={product.id} product={product} />
                     )
+                    :
+                    <h2 className='mb10'>Nenhum produto encontrado!</h2>
                 }
             </div>
         </>
