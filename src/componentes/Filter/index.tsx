@@ -1,92 +1,55 @@
 import './styles.css';
-
-import { useContext, useEffect, useState } from 'react';
-import * as productService from '../../services/product-service';
-import Listing from '../Listing';
-import { ContextProductCount } from '../../utils/context-product';
-import { ProductDTO } from '../../models/product';
+import { useState } from 'react';
 
 type Props = {
-    min: number;
-    max: number;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    onFilter: Function;
 }
 
-type FormData = {
-    minPrice?: number;
-    maxPrice?: number;
-}
+export default function Filter({ onFilter }: Props) {
 
+    const [minPrice, setMinPrice] = useState<number>(undefined);
 
-export default function Filter({min, max}: Props) {
+    const [maxPrice, setMaxPrice] = useState<number>(undefined);
 
-    const { setContextProductCount } = useContext(ContextProductCount);
-
-    const [products, setProducts] = useState<ProductDTO[]>([]);
-
-    const [formData, setFormData] = useState<FormData>({
-        minPrice: undefined,
-        maxPrice: undefined
-    });
-
-    useEffect(() => {
-        const listProd = productService.findByPrice(min, max);
-        setProducts(listProd);
-        setContextProductCount(listProd.length);
-    }, [formData]);
-
-
-    function handleInputChange(event: any) {
-        const value = event.target.value;
-        const name = event.target.name;
-        setFormData({ ...formData, [name]: value });
-
+    function handleInputMinPrice(event: any) {
+        setMinPrice(event.target.value);
     }
 
-    function handleOnSubmit(event: any) {
+    function handleInputMaxPrice(event: any) {
+        setMaxPrice(event.target.value);
+    }
+
+    function handleSubmit(event: any) {
         event.preventDefault();
-        onFilter(Number(formData.minPrice) || min, Number(formData.maxPrice) || max);
-    }
-
-    function onFilter(min: number, max: number) {
-        const listProd = productService.findByPrice(min, max);
-        setProducts(listProd);
-        setContextProductCount(listProd.length);
+        console.log(minPrice, maxPrice);
+        onFilter(Number(minPrice) || 0, Number(maxPrice) || Number.MAX_VALUE);
     }
 
     return (
         <>
             <div className='container ftr-container mt20'>
-                <form onSubmit={handleOnSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className='mb20'>
                         <input
                             name="minPrice"
-                            value={formData.minPrice}
+                            value={minPrice}
                             type="text"
                             placeholder="Preço mínimo"
-                            onChange={handleInputChange}
+                            onChange={handleInputMinPrice}
                         />
                     </div>
                     <div className='mb20'>
                         <input
                             name="maxPrice"
-                            value={formData.maxPrice}
+                            value={maxPrice}
                             type="text"
                             placeholder="Preço máximo"
-                            onChange={handleInputChange}
+                            onChange={handleInputMaxPrice}
                         />
                     </div>
                     <button type="submit" className='mb10' >Filtrar</button>
                 </form>
-            </div>
-            <div className='container ftr-container mt20'>
-                {
-                    products.length > 0 ?
-                    products.map(
-                        product => <Listing key={product.id} product={product} />
-                    )
-                    :
-                    <h2 className='mb10'>Nenhum produto encontrado!</h2>
-                }
             </div>
         </>
     );
